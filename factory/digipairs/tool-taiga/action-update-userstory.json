@@ -1,0 +1,56 @@
+{
+  "description": "Met à jour une user story Taiga existante (statut, titre, description, ...).",
+  "summary": "Update user story",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [
+      {
+        "name": "id",
+        "summary": "Identifiant",
+        "required": true,
+        "description": "Identifiant de la user story à mettre à jour",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "version",
+        "summary": "Version",
+        "required": true,
+        "description": "Version actuelle de la user story (requise par Taiga pour la gestion des conflits)",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "input",
+        "summary": "Champs à modifier",
+        "required": true,
+        "description": "Champs Taiga à mettre à jour (subject, status, description, ...)",
+        "schema": {
+          "type": "object"
+        }
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "User story mise à jour",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-taiga",
+        "element": "action-request",
+        "properties": {
+          "endpoint": "FEEL: \"/userstories/\" + string(request.body.id)",
+          "method": "PATCH",
+          "body": "FEEL: context merge([{ \"version\": request.body.version }, request.body.input])"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

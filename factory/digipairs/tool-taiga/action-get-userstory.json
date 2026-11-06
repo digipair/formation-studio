@@ -1,0 +1,37 @@
+{
+  "description": "Récupère le détail d'une user story Taiga à partir de son identifiant.",
+  "summary": "Get user story",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [
+      {
+        "name": "id",
+        "summary": "Identifiant",
+        "required": true,
+        "description": "Identifiant de la user story",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "Détail de la user story",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-taiga",
+        "element": "action-request",
+        "properties": {
+          "endpoint": "FEEL: \"/userstories/\" + string(request.body.id)",
+          "method": "GET"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

@@ -1,0 +1,66 @@
+{
+  "description": "List the user stories of a Taiga project.",
+  "summary": "List user stories",
+  "library": "@digipair/skill-worker",
+  "element": "action",
+  "metadata": {
+    "context": false,
+    "parameters": [
+      {
+        "name": "project",
+        "summary": "Project",
+        "required": true,
+        "description": "Identifier of the project",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "query",
+        "summary": "Filters",
+        "required": false,
+        "description": "Additional filters as a Taiga query string (e.g. status=1)",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "prompts": [
+      {
+        "title": "List user stories",
+        "description": "List the user stories of a Taiga project",
+        "icon": "list",
+        "tags": ["taiga", "userstory"],
+        "prompt": "list the user stories of a Taiga project"
+      }
+    ],
+    "output": {
+      "type": "array",
+      "description": "List of user stories",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-taiga",
+        "element": "action-list-userstories",
+        "properties": {
+          "project": "FEEL: request.body.project",
+          "query": "FEEL: request.body.query"
+        }
+      },
+      {
+        "library": "@digipair/skill-worker",
+        "element": "answer",
+        "properties": {
+          "content": "FEEL: previous"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

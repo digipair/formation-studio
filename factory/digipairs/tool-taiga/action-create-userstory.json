@@ -1,0 +1,56 @@
+{
+  "description": "Crée une nouvelle user story dans un projet Taiga.",
+  "summary": "Create user story",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [
+      {
+        "name": "project",
+        "summary": "Projet",
+        "required": true,
+        "description": "Identifiant du projet",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "subject",
+        "summary": "Titre",
+        "required": true,
+        "description": "Titre de la user story",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "input",
+        "summary": "Champs supplémentaires",
+        "required": false,
+        "description": "Champs Taiga additionnels à fusionner (description, status, tags, assigned_to, ...)",
+        "schema": {
+          "type": "object"
+        }
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "User story créée",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-taiga",
+        "element": "action-request",
+        "properties": {
+          "endpoint": "/userstories",
+          "method": "POST",
+          "body": "FEEL: context merge([{ \"project\": request.body.project, \"subject\": request.body.subject }, if request.body.input != null then request.body.input else {}])"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

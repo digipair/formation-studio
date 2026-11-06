@@ -1,0 +1,41 @@
+{
+  "description": "Liste les projets Taiga.",
+  "summary": "List projects",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [
+      {
+        "name": "query",
+        "summary": "Filtres",
+        "required": false,
+        "description": "Filtres au format query string Taiga (ex: member=1)",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "output": {
+      "type": "array",
+      "description": "Liste des projets",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-taiga",
+        "element": "action-request",
+        "properties": {
+          "endpoint": "/projects",
+          "method": "GET",
+          "query": "FEEL: request.body.query"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

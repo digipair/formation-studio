@@ -1,0 +1,73 @@
+{
+  "description": "Create a new user story in a Taiga project.",
+  "summary": "Create user story",
+  "library": "@digipair/skill-worker",
+  "element": "action",
+  "metadata": {
+    "context": true,
+    "parameters": [
+      {
+        "name": "project",
+        "summary": "Project",
+        "required": true,
+        "description": "Identifier of the project",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "subject",
+        "summary": "Title",
+        "required": true,
+        "description": "Title of the user story",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "input",
+        "summary": "Additional fields",
+        "required": false,
+        "description": "Additional Taiga fields to merge (description, status, tags, assigned_to, ...)",
+        "schema": {
+          "type": "object"
+        }
+      }
+    ],
+    "prompts": [
+      {
+        "title": "Create user story",
+        "description": "Create a new user story in a Taiga project",
+        "icon": "plus",
+        "tags": ["taiga", "userstory"],
+        "prompt": "create a Taiga user story"
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "Created user story",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-taiga",
+        "element": "action-create-userstory",
+        "properties": {
+          "project": "FEEL: request.body.project",
+          "subject": "FEEL: request.body.subject",
+          "input": "FEEL: request.body.input"
+        }
+      },
+      {
+        "library": "@digipair/skill-worker",
+        "element": "answer",
+        "properties": {
+          "content": "FEEL: previous"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

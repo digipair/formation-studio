@@ -1,0 +1,53 @@
+{
+  "description": "Retrieve the details of a Taiga user story from its identifier.",
+  "summary": "Get user story",
+  "library": "@digipair/skill-worker",
+  "element": "action",
+  "metadata": {
+    "context": false,
+    "parameters": [
+      {
+        "name": "id",
+        "summary": "Identifier",
+        "required": true,
+        "description": "Identifier of the user story",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "prompts": [
+      {
+        "title": "Get user story",
+        "description": "Retrieve the details of a Taiga user story",
+        "icon": "file-lines",
+        "tags": ["taiga", "userstory"],
+        "prompt": "get the details of a Taiga user story"
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "User story details",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-taiga",
+        "element": "action-get-userstory",
+        "properties": {
+          "id": "FEEL: request.body.id"
+        }
+      },
+      {
+        "library": "@digipair/skill-worker",
+        "element": "answer",
+        "properties": {
+          "content": "FEEL: previous"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

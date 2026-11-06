@@ -1,0 +1,59 @@
+{
+  "description": "Ajoute un commentaire à une user story Taiga.",
+  "summary": "Add comment",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [
+      {
+        "name": "id",
+        "summary": "Identifiant",
+        "required": true,
+        "description": "Identifiant de la user story concernée",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "version",
+        "summary": "Version",
+        "required": true,
+        "description": "Version actuelle de la user story (requise par Taiga pour la gestion des conflits)",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "comment",
+        "summary": "Commentaire",
+        "required": true,
+        "description": "Contenu du commentaire",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "User story mise à jour avec le commentaire",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-taiga",
+        "element": "action-request",
+        "properties": {
+          "endpoint": "FEEL: \"/userstories/\" + string(request.body.id)",
+          "method": "PATCH",
+          "body": {
+            "version": "FEEL: request.body.version",
+            "comment": "FEEL: request.body.comment"
+          }
+        }
+      }
+    ]
+  },
+  "pins": []
+}

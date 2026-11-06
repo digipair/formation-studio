@@ -1,0 +1,50 @@
+{
+  "description": "Liste les user stories d'un projet Taiga.",
+  "summary": "List user stories",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [
+      {
+        "name": "project",
+        "summary": "Projet",
+        "required": true,
+        "description": "Identifiant du projet",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "query",
+        "summary": "Filtres",
+        "required": false,
+        "description": "Filtres additionnels au format query string Taiga (ex: status=1)",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "output": {
+      "type": "array",
+      "description": "Liste des user stories",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-taiga",
+        "element": "action-request",
+        "properties": {
+          "endpoint": "/userstories",
+          "method": "GET",
+          "query": "FEEL: \"project=\" + string(request.body.project) + (if request.body.query != null and request.body.query != \"\" then \"&\" + request.body.query else \"\")"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

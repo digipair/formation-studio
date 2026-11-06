@@ -1,0 +1,73 @@
+{
+  "description": "Update an existing Taiga user story (status, title, description, ...).",
+  "summary": "Update user story",
+  "library": "@digipair/skill-worker",
+  "element": "action",
+  "metadata": {
+    "context": true,
+    "parameters": [
+      {
+        "name": "id",
+        "summary": "Identifier",
+        "required": true,
+        "description": "Identifier of the user story to update",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "version",
+        "summary": "Version",
+        "required": true,
+        "description": "Current version of the user story (required by Taiga for conflict handling)",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "input",
+        "summary": "Fields to update",
+        "required": true,
+        "description": "Taiga fields to update (subject, status, description, ...)",
+        "schema": {
+          "type": "object"
+        }
+      }
+    ],
+    "prompts": [
+      {
+        "title": "Update user story",
+        "description": "Update an existing Taiga user story",
+        "icon": "pen-to-square",
+        "tags": ["taiga", "userstory"],
+        "prompt": "update a Taiga user story"
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "Updated user story",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-taiga",
+        "element": "action-update-userstory",
+        "properties": {
+          "id": "FEEL: request.body.id",
+          "version": "FEEL: request.body.version",
+          "input": "FEEL: request.body.input"
+        }
+      },
+      {
+        "library": "@digipair/skill-worker",
+        "element": "answer",
+        "properties": {
+          "content": "FEEL: previous"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

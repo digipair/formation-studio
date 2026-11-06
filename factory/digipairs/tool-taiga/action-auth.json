@@ -1,0 +1,50 @@
+{
+  "description": "Authentifie l'utilisateur sur l'API REST de Taiga et retourne le jeton d'authentification. Authentification centralisée réutilisée par les autres actions.",
+  "summary": "Auth",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [],
+    "output": {
+      "type": "object",
+      "description": "Jeton d'authentification Taiga",
+      "properties": {
+        "auth_token": {
+          "type": "string",
+          "description": "Jeton à transmettre dans l'en-tête Authorization: Bearer des requêtes suivantes"
+        }
+      },
+      "required": ["auth_token"]
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-http",
+        "element": "request",
+        "properties": {
+          "path": "FEEL: privates.TAIGA_URL + \"/auth\"",
+          "method": "POST",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "type": "normal",
+            "username": "FEEL: privates.TAIGA_USERNAME",
+            "password": "FEEL: privates.TAIGA_PASSWORD"
+          }
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "transform",
+        "properties": {
+          "value": {
+            "auth_token": "FEEL: previous.auth_token"
+          }
+        }
+      }
+    ]
+  },
+  "pins": []
+}

@@ -1,0 +1,73 @@
+{
+  "description": "Add a comment to a Taiga user story.",
+  "summary": "Add comment",
+  "library": "@digipair/skill-worker",
+  "element": "action",
+  "metadata": {
+    "context": true,
+    "parameters": [
+      {
+        "name": "id",
+        "summary": "Identifier",
+        "required": true,
+        "description": "Identifier of the related user story",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "version",
+        "summary": "Version",
+        "required": true,
+        "description": "Current version of the user story (required by Taiga for conflict handling)",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "comment",
+        "summary": "Comment",
+        "required": true,
+        "description": "Content of the comment",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "prompts": [
+      {
+        "title": "Add comment",
+        "description": "Add a comment to a Taiga user story",
+        "icon": "comment",
+        "tags": ["taiga", "userstory", "comment"],
+        "prompt": "add a comment to a Taiga user story"
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "User story updated with the comment",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-taiga",
+        "element": "action-add-comment",
+        "properties": {
+          "id": "FEEL: request.body.id",
+          "version": "FEEL: request.body.version",
+          "comment": "FEEL: request.body.comment"
+        }
+      },
+      {
+        "library": "@digipair/skill-worker",
+        "element": "answer",
+        "properties": {
+          "content": "FEEL: previous"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

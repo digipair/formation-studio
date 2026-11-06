@@ -1,0 +1,22 @@
+{
+  "name": "taiga",
+  "description": "Plateforme libre de gestion de projet agile.",
+  "metadata": {
+    "template": "tool",
+    "primary": "#51E0DC",
+    "textPrimary": "#242E3B",
+    "secondary": "#242E3B",
+    "textSecondary": "#FFFFFF"
+  },
+  "libraries": {
+    "@digipair/skill-basic": "latest",
+    "@digipair/skill-debug": "latest",
+    "@digipair/skill-tool": "latest",
+    "digipair:tool-http": "latest"
+  },
+  "roles": {},
+  "variables": {},
+  "privates": { "TAIGA_URL": "", "TAIGA_USERNAME": "", "TAIGA_PASSWORD": "" },
+  "digipair": "tool-taiga",
+  "id": "tool-taiga"
+}

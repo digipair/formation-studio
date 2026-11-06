@@ -1,0 +1,82 @@
+{
+  "description": "Exécute une requête authentifiée sur l'API REST de Taiga. Récupère un jeton via action-auth puis exécute la requête. Appel HTTP centralisé réutilisé par les autres actions.",
+  "summary": "Request",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [
+      {
+        "name": "endpoint",
+        "summary": "Endpoint",
+        "required": true,
+        "description": "Chemin relatif de l'API Taiga (ex: /projects, /userstories/2)",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "method",
+        "summary": "Méthode",
+        "required": false,
+        "description": "Méthode HTTP à utiliser (GET par défaut)",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "body",
+        "summary": "Corps",
+        "required": false,
+        "description": "Corps JSON de la requête",
+        "schema": {
+          "type": "object"
+        }
+      },
+      {
+        "name": "query",
+        "summary": "Query",
+        "required": false,
+        "description": "Chaîne de requête à ajouter à l'URL (sans le ?)",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "Réponse JSON de l'API Taiga",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "taigaAuth",
+          "execute": [
+            {
+              "library": "digipair:tool-taiga",
+              "element": "action-auth"
+            }
+          ]
+        }
+      },
+      {
+        "library": "digipair:tool-http",
+        "element": "request",
+        "properties": {
+          "path": "FEEL: privates.TAIGA_URL + request.body.endpoint + (if request.body.query != null and request.body.query != \"\" then \"?\" + request.body.query else \"\")",
+          "method": "FEEL: if request.body.method != null then request.body.method else \"GET\"",
+          "body": "FEEL: request.body.body",
+          "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "FEEL: \"Bearer \" + variables.taigaAuth.auth_token"
+          }
+        }
+      }
+    ]
+  },
+  "pins": []
+}

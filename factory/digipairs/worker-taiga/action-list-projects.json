@@ -1,0 +1,56 @@
+{
+  "description": "List the Taiga projects.",
+  "summary": "List projects",
+  "library": "@digipair/skill-worker",
+  "element": "action",
+  "metadata": {
+    "context": false,
+    "parameters": [
+      {
+        "name": "query",
+        "summary": "Filters",
+        "required": false,
+        "description": "Filters as a Taiga query string (e.g. member=1)",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "prompts": [
+      {
+        "title": "List projects",
+        "description": "List the Taiga projects",
+        "icon": "folder",
+        "tags": ["taiga", "project"],
+        "prompt": "list the Taiga projects"
+      }
+    ],
+    "output": {
+      "type": "array",
+      "description": "List of projects",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-taiga",
+        "element": "action-list-projects",
+        "properties": {
+          "query": "FEEL: request.body.query"
+        }
+      },
+      {
+        "library": "@digipair/skill-worker",
+        "element": "answer",
+        "properties": {
+          "content": "FEEL: previous"
+        }
+      }
+    ]
+  },
+  "pins": []
+}
