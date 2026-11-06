@@ -1,1 +1,49 @@
-{"name":"taiga","description":"Taiga is an open-source project management platform for agile teams, handling backlogs, sprints, user stories, tasks and issues.","metadata":{"primary":"#51E0DC","textPrimary":"#242E3B","secondary":"#242E3B","textSecondary":"#FFFFFF","remote":true},"libraries":{"@digipair/skill-basic":"latest","@digipair/skill-debug":"latest","@digipair/skill-worker":"latest","digipair:tool-taiga":"latest"},"roles":{"digipair:role-worker":"latest"},"variables":{},"privates":{},"digipair":"worker-taiga","id":"worker-taiga"}
+{
+  "name": "taiga",
+  "description": "Taiga is an open-source project management platform for agile teams, handling backlogs, sprints, user stories, tasks and issues.",
+  "metadata": {
+    "primary": "#51E0DC",
+    "textPrimary": "#242E3B",
+    "secondary": "#242E3B",
+    "textSecondary": "#FFFFFF",
+    "remote": true,
+    "configurationSchema": {
+      "type": "object",
+      "properties": {
+        "TAIGA_URL": {
+          "type": "string",
+          "title": "Taiga API URL",
+          "description": "Base URL of the Taiga REST API (e.g. https://api.taiga.io/api/v1)."
+        },
+        "TAIGA_AUTH_TYPE": {
+          "type": "string",
+          "title": "Taiga Authentication Type",
+          "description": "Authentication type used against the Taiga API.",
+          "enum": ["normal", "ldap"],
+          "default": "normal"
+        },
+        "TAIGA_USERNAME": {
+          "type": "string",
+          "title": "Taiga Username",
+          "description": "Username (or email) used for authentication."
+        },
+        "TAIGA_PASSWORD": {
+          "type": "string",
+          "title": "Taiga Password",
+          "description": "Password used for authentication."
+        }
+      }
+    }
+  },
+  "libraries": {
+    "@digipair/skill-basic": "latest",
+    "@digipair/skill-debug": "latest",
+    "@digipair/skill-worker": "latest",
+    "digipair:tool-taiga": "latest"
+  },
+  "roles": { "digipair:role-worker": "latest" },
+  "variables": {},
+  "privates": {},
+  "digipair": "worker-taiga",
+  "id": "worker-taiga"
+}

@@ -16,7 +16,7 @@
   },
   "roles": {},
   "variables": {},
-  "privates": { "TAIGA_URL": "", "TAIGA_AUTH_TYPE": "normal", "TAIGA_USERNAME": "", "TAIGA_PASSWORD": "" },
+  "privates": {},
   "digipair": "tool-taiga",
   "id": "tool-taiga"
 }

@@ -6,7 +6,37 @@
     "textPrimary": "#242E3B",
     "secondary": "#242E3B",
     "textSecondary": "#FFFFFF",
-    "remote": true
+    "remote": true,
+    "configurationSchema": {
+      "type": "object",
+      "properties": {
+        "GLPI_URL": {
+          "type": "string",
+          "title": "GLPI API URL",
+          "description": "Base URL of the GLPI REST API (e.g. https://glpi.example.com/apirest.php)."
+        },
+        "GLPI_APP_TOKEN": {
+          "type": "string",
+          "title": "GLPI App-Token",
+          "description": "Application token (App-Token) of the GLPI API client."
+        },
+        "GLPI_USER_TOKEN": {
+          "type": "string",
+          "title": "GLPI User Token",
+          "description": "Personal user token used for authentication. If set, it takes precedence over login/password."
+        },
+        "GLPI_LOGIN": {
+          "type": "string",
+          "title": "GLPI Login",
+          "description": "Username used for Basic authentication when no user token is provided."
+        },
+        "GLPI_PASSWORD": {
+          "type": "string",
+          "title": "GLPI Password",
+          "description": "Password used for Basic authentication when no user token is provided."
+        }
+      }
+    }
   },
   "libraries": {
     "@digipair/skill-basic": "latest",

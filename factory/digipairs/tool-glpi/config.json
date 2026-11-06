@@ -16,7 +16,7 @@
   },
   "roles": {},
   "variables": {},
-  "privates": { "GLPI_URL": "", "GLPI_APP_TOKEN": "", "GLPI_USER_TOKEN": "", "GLPI_LOGIN": "", "GLPI_PASSWORD": "" },
+  "privates": {},
   "digipair": "tool-glpi",
   "id": "tool-glpi"
 }
