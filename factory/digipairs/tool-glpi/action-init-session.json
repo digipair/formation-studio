@@ -1,0 +1,47 @@
+{
+  "description": "Ouvre une session sur l'API REST de GLPI et retourne le jeton de session. Authentification centralisée réutilisée par les autres actions.",
+  "summary": "Init session",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [],
+    "output": {
+      "type": "object",
+      "description": "Jeton de session GLPI",
+      "properties": {
+        "session_token": {
+          "type": "string",
+          "description": "Jeton de session à transmettre dans l'en-tête Session-Token des requêtes suivantes"
+        }
+      },
+      "required": ["session_token"]
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-http",
+        "element": "request",
+        "properties": {
+          "path": "FEEL: privates.GLPI_URL + \"/initSession\"",
+          "method": "GET",
+          "headers": {
+            "Content-Type": "application/json",
+            "App-Token": "FEEL: privates.GLPI_APP_TOKEN",
+            "Authorization": "FEEL: \"user_token \" + privates.GLPI_USER_TOKEN"
+          }
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "transform",
+        "properties": {
+          "value": {
+            "session_token": "FEEL: previous.session_token"
+          }
+        }
+      }
+    ]
+  },
+  "pins": []
+}

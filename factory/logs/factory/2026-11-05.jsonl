@@ -1,0 +1,3 @@
+
+{"date":1793885213129,"digipair":"studio","reasoning":"conversation","type":"ERROR","message":"OpenAI API key not set"}
+{"date":1793890155454,"digipair":"studio","reasoning":"tool-task-editor","type":"ERROR","message":"ENOENT: no such file or directory, open './factory/digipairs/tool-glpi/add-followup.json'"}

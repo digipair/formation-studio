@@ -1,0 +1,19 @@
+{
+  "name": "<%= name %>",
+  "description": "<%= description %>",
+  "metadata": {
+    "primary": "#51E0DC",
+    "textPrimary": "#242E3B",
+    "secondary": "#242E3B",
+    "textSecondary": "#FFFFFF"
+  },
+  "libraries": {
+    "@digipair/skill-basic": "latest",
+    "@digipair/skill-debug": "latest",
+    "@digipair/skill-worker": "latest"
+  },
+  "roles": { "digipair:role-worker": "latest" },
+  "variables": {},
+  "privates": {},
+  "digipair": "<%= digipair %>"
+}

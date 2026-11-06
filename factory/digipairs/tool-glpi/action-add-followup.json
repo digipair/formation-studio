@@ -1,0 +1,63 @@
+{
+  "description": "Ajoute un suivi (ITILFollowup) à un ticket GLPI.",
+  "summary": "Add followup",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [
+      {
+        "name": "ticket",
+        "summary": "Ticket",
+        "required": true,
+        "description": "Identifiant du ticket concerné",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "content",
+        "summary": "Contenu",
+        "required": true,
+        "description": "Contenu du suivi",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "private",
+        "summary": "Privé",
+        "required": false,
+        "description": "Marque le suivi comme privé (visible uniquement par les techniciens)",
+        "schema": {
+          "type": "boolean"
+        }
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "Résultat de la création du suivi",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-glpi",
+        "element": "action-request",
+        "properties": {
+          "endpoint": "/ITILFollowup",
+          "method": "POST",
+          "body": {
+            "input": {
+              "itemtype": "Ticket",
+              "items_id": "FEEL: request.body.ticket",
+              "content": "FEEL: request.body.content",
+              "is_private": "FEEL: if request.body.private = true then 1 else 0"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "pins": []
+}

@@ -1,0 +1,53 @@
+{
+  "description": "Retrieve the details of a GLPI ticket from its identifier.",
+  "summary": "Get ticket",
+  "library": "@digipair/skill-worker",
+  "element": "action",
+  "metadata": {
+    "context": false,
+    "parameters": [
+      {
+        "name": "id",
+        "summary": "Identifier",
+        "required": true,
+        "description": "Identifier of the ticket",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "prompts": [
+      {
+        "title": "Get ticket",
+        "description": "Retrieve the details of a GLPI ticket",
+        "icon": "ticket",
+        "tags": ["glpi", "ticket"],
+        "prompt": "get the details of a GLPI ticket"
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "Ticket details",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-glpi",
+        "element": "action-get-ticket",
+        "properties": {
+          "id": "FEEL: request.body.id"
+        }
+      },
+      {
+        "library": "@digipair/skill-worker",
+        "element": "answer",
+        "properties": {
+          "content": "FEEL: previous"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

@@ -1,0 +1,273 @@
+{
+  "description": "Mécanisme d'appel d'une API",
+  "summary": "Fallback générique openApi-apiKey",
+  "library": "@digipair/skill-factory",
+  "element": "task",
+  "metadata": {},
+  "properties": {
+    "execute": [
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "openapi",
+          "execute": [
+            {
+              "library": "@digipair/skill-factory",
+              "element": "start",
+              "properties": {
+                "digipair": "FEEL: request.digipair",
+                "reasoning": "openapi",
+                "body": {}
+              },
+              "conditions": {},
+              "name": "digipair"
+            }
+          ]
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "server",
+          "value": "FEEL: variables.openapi.servers[1].url"
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "infos",
+          "value": "FEEL: (\n  for line in get entries(variables.openapi.paths) \n  return \n    { \n      \"path\": line.key,\n      \"value\": get entries(line.value)[(item.key = \"parameters\") or (item.value.operationId = request.reasoning) or (item.value.operationId = null and (item.key + replace(replace(replace(line.key, \"/\", \"-\"), \"\\{\", \"\"), \"\\}\", \"\")) = request.reasoning)]\n    }\n)[count(item.value) > 1 or item.value[1].key != \"parameters\"][count(item.value) > 0][1]"
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "method",
+          "value": "FEEL: variables.infos.value[item.key != \"parameters\"][1].key"
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "parameters",
+          "execute": [
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: concatenate(\n  flatten(variables.infos.value[item.key = \"parameters\"].value),\n  flatten(variables.infos.value[item.key != \"parameters\"].value.parameters)\n)"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "parametersPath",
+          "execute": [
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: for parameter in variables.parameters return get entries(parameter)"
+              }
+            },
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: for parameter in previous return if count(parameter[item.key = \"in\" and item.value = \"path\"]) > 0 then parameter else null "
+              }
+            },
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: for parameter in previous[item != null] return context(parameter)"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "parametersQuery",
+          "execute": [
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: for parameter in variables.parameters return get entries(parameter)"
+              }
+            },
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: for parameter in previous return if count(parameter[item.key = \"in\" and item.value = \"query\"]) > 0 then parameter else null "
+              }
+            },
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: for parameter in previous[item != null] return context(parameter)"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "parametersHeader",
+          "execute": [
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: for parameter in variables.parameters return get entries(parameter)"
+              }
+            },
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: for parameter in previous return if count(parameter[item.key = \"in\" and item.value = \"header\"]) > 0 then parameter else null "
+              }
+            },
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: for parameter in previous[item != null] return context(parameter)"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "path",
+          "value": "FEEL: variables.infos.path"
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "transform",
+        "properties": {
+          "execute": [
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: item"
+              }
+            },
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: get entries(request.body)[item.key = previous.name][1].value"
+              }
+            },
+            {
+              "library": "@digipair/skill-basic",
+              "element": "setVariable",
+              "properties": {
+                "name": "path",
+                "value": "FEEL: replace(variables.path, \"\\{\" + item.name + \"\\}\", string(previous))"
+              }
+            }
+          ]
+        },
+        "conditions": {
+          "each": "FEEL: variables.parametersPath"
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "headers",
+          "execute": [
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: get entries(variables.infos.value[item.key = variables.method].value.requestBody[1].content)"
+              }
+            },
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: if previous[item.key = \"application/json\"][1] != null then \n  \"application/json\" \nelse if previous[item.key = \"application/x-www-form-urlencoded\"][1] != null then \n  \"application/x-www-form-urlencoded\"\nelse\n  null"
+              }
+            },
+            {
+              "library": "@digipair/skill-basic",
+              "element": "transform",
+              "properties": {
+                "value": "FEEL: context merge([\n  context((for parameter in get entries(request.body) return if count(variables.parametersHeaders[item.name = parameter.key]) > 0 then parameter else null)[item != null]), \n  context([{ \"key\": privates.OPENAPI_AUTHORIZATION_KEY, \"value\": privates.OPENAPI_AUTHORIZATION_VALUE }]),\n  if previous != null then\n    {\n      \"Content-Type\": previous\n    }\n  else\n    {}\n])"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "body",
+          "value": "FEEL: context(\n  (\n    for parameter in get entries(request.body)\n      return if count(variables.parametersQuery[item.name = parameter.key]) <= 0\n      then parameter \n      else null\n  )[item != null]\n)"
+        },
+        "conditions": {
+          "if": "FEEL: variables.infos.value[item.key = variables.method].value.requestBody[1] = null"
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "body",
+          "value": "FEEL: request.body.body"
+        },
+        "conditions": {
+          "if": "FEEL: variables.infos.value[item.key = variables.method].value.requestBody[1] != null"
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "queries",
+          "value": "FEEL: (for parameter in get entries(request.body)\n      return if count(variables.parametersQuery[item.name = parameter.key]) > 0\n      then parameter.key + \"=\" + string(parameter.value)\n      else null\n  )[item != null]"
+        }
+      },
+      {
+        "library": "@digipair/skill-http",
+        "element": "request",
+        "properties": {
+          "path": "FEEL: variables.server + variables.path + if count(variables.queries) <= 0 then \"\" else \"?\" + string join(variables.queries, \"&\")",
+          "method": "FEEL: variables.method",
+          "body": "FEEL: if variables.method != \"get\" and variables.method != \"head\" then variables.body else null",
+          "headers": "FEEL: variables.headers"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

@@ -1,0 +1,63 @@
+{
+  "description": "Query the GLPI search engine for a given item type.",
+  "summary": "Search",
+  "library": "@digipair/skill-worker",
+  "element": "action",
+  "metadata": {
+    "context": false,
+    "parameters": [
+      {
+        "name": "itemtype",
+        "summary": "Item type",
+        "required": true,
+        "description": "GLPI item type to search (e.g. Ticket, Computer, User)",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "query",
+        "summary": "Criteria",
+        "required": false,
+        "description": "Search criteria as a GLPI query string (e.g. criteria[0][field]=12&criteria[0][searchtype]=equals&criteria[0][value]=1)",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "prompts": [
+      {
+        "title": "Search",
+        "description": "Query the GLPI search engine for a given item type",
+        "icon": "magnifying-glass",
+        "tags": ["glpi", "search"],
+        "prompt": "search GLPI items"
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "GLPI search results (totalcount, count, data, ...)",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-glpi",
+        "element": "action-search",
+        "properties": {
+          "itemtype": "FEEL: request.body.itemtype",
+          "query": "FEEL: request.body.query"
+        }
+      },
+      {
+        "library": "@digipair/skill-worker",
+        "element": "answer",
+        "properties": {
+          "content": "FEEL: previous"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

@@ -1,0 +1,73 @@
+{
+  "description": "Add a followup (ITILFollowup) to a GLPI ticket.",
+  "summary": "Add followup",
+  "library": "@digipair/skill-worker",
+  "element": "action",
+  "metadata": {
+    "context": true,
+    "parameters": [
+      {
+        "name": "ticket",
+        "summary": "Ticket",
+        "required": true,
+        "description": "Identifier of the related ticket",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "content",
+        "summary": "Content",
+        "required": true,
+        "description": "Content of the followup",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "private",
+        "summary": "Private",
+        "required": false,
+        "description": "Mark the followup as private (visible only by technicians)",
+        "schema": {
+          "type": "boolean"
+        }
+      }
+    ],
+    "prompts": [
+      {
+        "title": "Add followup",
+        "description": "Add a followup to a GLPI ticket",
+        "icon": "comment",
+        "tags": ["glpi", "ticket", "followup"],
+        "prompt": "add a followup to a GLPI ticket"
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "Result of the followup creation",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-glpi",
+        "element": "action-add-followup",
+        "properties": {
+          "ticket": "FEEL: request.body.ticket",
+          "content": "FEEL: request.body.content",
+          "private": "FEEL: request.body.private"
+        }
+      },
+      {
+        "library": "@digipair/skill-worker",
+        "element": "answer",
+        "properties": {
+          "content": "FEEL: previous"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

@@ -1,0 +1,66 @@
+{
+  "description": "List the objects of any GLPI item type (Computer, User, Software, ...).",
+  "summary": "List items",
+  "library": "@digipair/skill-worker",
+  "element": "action",
+  "metadata": {
+    "context": false,
+    "parameters": [
+      {
+        "name": "itemtype",
+        "summary": "Item type",
+        "required": true,
+        "description": "GLPI item type to list (e.g. Computer, User, Software)",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "range",
+        "summary": "Range",
+        "required": false,
+        "description": "Result range in GLPI format (e.g. 0-49). Defaults to 0-49.",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "prompts": [
+      {
+        "title": "List items",
+        "description": "List the objects of any GLPI item type",
+        "icon": "server",
+        "tags": ["glpi", "inventory"],
+        "prompt": "list GLPI items of a given type"
+      }
+    ],
+    "output": {
+      "type": "array",
+      "description": "List of objects",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-glpi",
+        "element": "action-list-items",
+        "properties": {
+          "itemtype": "FEEL: request.body.itemtype",
+          "range": "FEEL: request.body.range"
+        }
+      },
+      {
+        "library": "@digipair/skill-worker",
+        "element": "answer",
+        "properties": {
+          "content": "FEEL: previous"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

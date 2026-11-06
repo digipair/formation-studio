@@ -1,0 +1,47 @@
+{
+  "description": "Interroge le moteur de recherche de GLPI pour un type d'objet donné.",
+  "summary": "Search",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [
+      {
+        "name": "itemtype",
+        "summary": "Type d'objet",
+        "required": true,
+        "description": "Type d'objet GLPI à rechercher (ex: Ticket, Computer, User)",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "query",
+        "summary": "Critères",
+        "required": false,
+        "description": "Critères de recherche au format query string GLPI (ex: criteria[0][field]=12&criteria[0][searchtype]=equals&criteria[0][value]=1)",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "Résultats de recherche GLPI (totalcount, count, data, ...)",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-glpi",
+        "element": "action-request",
+        "properties": {
+          "endpoint": "FEEL: \"/search/\" + request.body.itemtype",
+          "method": "GET",
+          "query": "FEEL: request.body.query"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

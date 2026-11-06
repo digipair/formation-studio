@@ -1,0 +1,37 @@
+{
+  "description": "Récupère le détail d'un ticket GLPI à partir de son identifiant.",
+  "summary": "Get ticket",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [
+      {
+        "name": "id",
+        "summary": "Identifiant",
+        "required": true,
+        "description": "Identifiant du ticket",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "Détail du ticket",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-glpi",
+        "element": "action-request",
+        "properties": {
+          "endpoint": "FEEL: \"/Ticket/\" + string(request.body.id)",
+          "method": "GET"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

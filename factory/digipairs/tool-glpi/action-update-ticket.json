@@ -1,0 +1,49 @@
+{
+  "description": "Met à jour un ticket GLPI existant (statut, priorité, contenu, ...).",
+  "summary": "Update ticket",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [
+      {
+        "name": "id",
+        "summary": "Identifiant",
+        "required": true,
+        "description": "Identifiant du ticket à mettre à jour",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "input",
+        "summary": "Champs à modifier",
+        "required": true,
+        "description": "Champs GLPI à mettre à jour (status, priority, content, ...)",
+        "schema": {
+          "type": "object"
+        }
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "Résultat de la mise à jour",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-glpi",
+        "element": "action-request",
+        "properties": {
+          "endpoint": "FEEL: \"/Ticket/\" + string(request.body.id)",
+          "method": "PUT",
+          "body": {
+            "input": "FEEL: context merge([{ \"id\": request.body.id }, request.body.input])"
+          }
+        }
+      }
+    ]
+  },
+  "pins": []
+}

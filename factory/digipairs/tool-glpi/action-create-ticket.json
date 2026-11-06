@@ -1,0 +1,58 @@
+{
+  "description": "Crée un nouveau ticket dans le helpdesk GLPI.",
+  "summary": "Create ticket",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [
+      {
+        "name": "name",
+        "summary": "Titre",
+        "required": true,
+        "description": "Titre du ticket",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "content",
+        "summary": "Description",
+        "required": true,
+        "description": "Description du ticket",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "input",
+        "summary": "Champs supplémentaires",
+        "required": false,
+        "description": "Champs GLPI additionnels à fusionner (type, urgency, priority, itilcategories_id, ...)",
+        "schema": {
+          "type": "object"
+        }
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "Résultat de la création (contient l'identifiant du ticket créé)",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-glpi",
+        "element": "action-request",
+        "properties": {
+          "endpoint": "/Ticket",
+          "method": "POST",
+          "body": {
+            "input": "FEEL: context merge([{ \"name\": request.body.name, \"content\": request.body.content }, if request.body.input != null then request.body.input else {}])"
+          }
+        }
+      }
+    ]
+  },
+  "pins": []
+}

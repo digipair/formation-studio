@@ -1,0 +1,50 @@
+{
+  "description": "Liste les objets d'un type GLPI quelconque (Computer, User, Software, ...).",
+  "summary": "List items",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [
+      {
+        "name": "itemtype",
+        "summary": "Type d'objet",
+        "required": true,
+        "description": "Type d'objet GLPI à lister (ex: Computer, User, Software)",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "range",
+        "summary": "Plage",
+        "required": false,
+        "description": "Plage de résultats au format GLPI (ex: 0-49). 0-49 par défaut.",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "output": {
+      "type": "array",
+      "description": "Liste des objets",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-glpi",
+        "element": "action-request",
+        "properties": {
+          "endpoint": "FEEL: \"/\" + request.body.itemtype",
+          "method": "GET",
+          "query": "FEEL: \"range=\" + (if request.body.range != null and request.body.range != \"\" then request.body.range else \"0-49\")"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

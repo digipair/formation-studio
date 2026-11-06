@@ -1,0 +1,111 @@
+{
+  "description": "Exécute une requête authentifiée sur l'API REST de GLPI. Ouvre une session via init-session, exécute la requête puis ferme la session. Appel HTTP centralisé réutilisé par les autres actions.",
+  "summary": "Request",
+  "library": "@digipair/skill-tool",
+  "element": "action",
+  "metadata": {
+    "parameters": [
+      {
+        "name": "endpoint",
+        "summary": "Endpoint",
+        "required": true,
+        "description": "Chemin relatif de l'API GLPI (ex: /Ticket, /Ticket/2, /search/Ticket)",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "method",
+        "summary": "Méthode",
+        "required": false,
+        "description": "Méthode HTTP à utiliser (GET par défaut)",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "body",
+        "summary": "Corps",
+        "required": false,
+        "description": "Corps JSON de la requête",
+        "schema": {
+          "type": "object"
+        }
+      },
+      {
+        "name": "query",
+        "summary": "Query",
+        "required": false,
+        "description": "Chaîne de requête à ajouter à l'URL (sans le ?)",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "output": {
+      "type": "object",
+      "description": "Réponse JSON de l'API GLPI",
+      "additionalProperties": true
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "glpiSession",
+          "execute": [
+            {
+              "library": "digipair:tool-glpi",
+              "element": "action-init-session"
+            }
+          ]
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "setVariable",
+        "properties": {
+          "name": "glpiResponse",
+          "execute": [
+            {
+              "library": "digipair:tool-http",
+              "element": "request",
+              "properties": {
+                "path": "FEEL: privates.GLPI_URL + request.body.endpoint + (if request.body.query != null and request.body.query != \"\" then \"?\" + request.body.query else \"\")",
+                "method": "FEEL: if request.body.method != null then request.body.method else \"GET\"",
+                "body": "FEEL: request.body.body",
+                "headers": {
+                  "Content-Type": "application/json",
+                  "App-Token": "FEEL: privates.GLPI_APP_TOKEN",
+                  "Session-Token": "FEEL: variables.glpiSession.session_token"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "library": "digipair:tool-http",
+        "element": "request",
+        "properties": {
+          "path": "FEEL: privates.GLPI_URL + \"/killSession\"",
+          "method": "GET",
+          "headers": {
+            "App-Token": "FEEL: privates.GLPI_APP_TOKEN",
+            "Session-Token": "FEEL: variables.glpiSession.session_token"
+          }
+        }
+      },
+      {
+        "library": "@digipair/skill-basic",
+        "element": "transform",
+        "properties": {
+          "value": "FEEL: variables.glpiResponse"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

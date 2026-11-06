@@ -1,0 +1,22 @@
+{
+  "name": "glpi",
+  "description": "Gestionnaire libre de parc informatique.",
+  "metadata": {
+    "template": "tool",
+    "primary": "#51E0DC",
+    "textPrimary": "#242E3B",
+    "secondary": "#242E3B",
+    "textSecondary": "#FFFFFF"
+  },
+  "libraries": {
+    "@digipair/skill-basic": "latest",
+    "@digipair/skill-debug": "latest",
+    "@digipair/skill-tool": "latest",
+    "digipair:tool-http": "latest"
+  },
+  "roles": {},
+  "variables": {},
+  "privates": { "GLPI_URL": "", "GLPI_APP_TOKEN": "", "GLPI_USER_TOKEN": "" },
+  "digipair": "tool-glpi",
+  "id": "tool-glpi"
+}

@@ -1,0 +1,56 @@
+{
+  "description": "List the tickets from the GLPI helpdesk.",
+  "summary": "List tickets",
+  "library": "@digipair/skill-worker",
+  "element": "action",
+  "metadata": {
+    "context": false,
+    "parameters": [
+      {
+        "name": "range",
+        "summary": "Range",
+        "required": false,
+        "description": "Result range in GLPI format (e.g. 0-49). Defaults to 0-49.",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "prompts": [
+      {
+        "title": "List tickets",
+        "description": "List the tickets from the GLPI helpdesk",
+        "icon": "list",
+        "tags": ["glpi", "ticket"],
+        "prompt": "list the GLPI tickets"
+      }
+    ],
+    "output": {
+      "type": "array",
+      "description": "List of tickets",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    }
+  },
+  "properties": {
+    "execute": [
+      {
+        "library": "digipair:tool-glpi",
+        "element": "action-list-tickets",
+        "properties": {
+          "range": "FEEL: request.body.range"
+        }
+      },
+      {
+        "library": "@digipair/skill-worker",
+        "element": "answer",
+        "properties": {
+          "content": "FEEL: previous"
+        }
+      }
+    ]
+  },
+  "pins": []
+}

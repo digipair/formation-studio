@@ -1,0 +1,17 @@
+{
+  "description": "A brief explanation of a concept or process through an example or showcase.",
+  "summary": "demonstration",
+  "library": "@digipair/skill-worker",
+  "element": "action",
+  "metadata": { "parameters": [], "prompts": [] },
+  "properties": {
+    "execute": [
+      {
+        "library": "@digipair/skill-worker",
+        "element": "answer",
+        "properties": { "content": { "test": "hello world" } }
+      }
+    ]
+  },
+  "pins": []
+}
