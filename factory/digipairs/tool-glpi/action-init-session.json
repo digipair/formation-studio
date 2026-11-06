@@ -1,5 +1,5 @@
 {
-  "description": "Ouvre une session sur l'API REST de GLPI et retourne le jeton de session. Authentification centralisée réutilisée par les autres actions.",
+  "description": "Ouvre une session sur l'API REST de GLPI et retourne le jeton de session. S'authentifie par user_token si GLPI_USER_TOKEN est renseigné, sinon par login/mot de passe (Basic) via GLPI_LOGIN et GLPI_PASSWORD. Authentification centralisée réutilisée par les autres actions.",
   "summary": "Init session",
   "library": "@digipair/skill-tool",
   "element": "action",
@@ -28,7 +28,7 @@
           "headers": {
             "Content-Type": "application/json",
             "App-Token": "FEEL: privates.GLPI_APP_TOKEN",
-            "Authorization": "FEEL: \"user_token \" + privates.GLPI_USER_TOKEN"
+            "Authorization": "FEEL: if privates.GLPI_USER_TOKEN != null and privates.GLPI_USER_TOKEN != \"\" then \"user_token \" + privates.GLPI_USER_TOKEN else \"Basic \" + btoa(privates.GLPI_LOGIN + \":\" + privates.GLPI_PASSWORD)"
           }
         }
       },

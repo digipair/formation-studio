@@ -1,1 +1,22 @@
-{"name":"glpi","description":"GLPI is an open-source IT asset management software that helps manage resources, track incidents, and provide service management solutions.","metadata":{"primary":"#51E0DC","textPrimary":"#242E3B","secondary":"#242E3B","textSecondary":"#FFFFFF","remote":true},"libraries":{"@digipair/skill-basic":"latest","@digipair/skill-debug":"latest","@digipair/skill-worker":"latest","digipair:tool-glpi":"latest"},"roles":{"digipair:role-worker":"latest"},"variables":{},"privates":{},"digipair":"worker-glpi","id":"worker-glpi"}
+{
+  "name": "glpi",
+  "description": "GLPI is an open-source IT asset management software that helps manage resources, track incidents, and provide service management solutions.",
+  "metadata": {
+    "primary": "#51E0DC",
+    "textPrimary": "#242E3B",
+    "secondary": "#242E3B",
+    "textSecondary": "#FFFFFF",
+    "remote": true
+  },
+  "libraries": {
+    "@digipair/skill-basic": "latest",
+    "@digipair/skill-debug": "latest",
+    "@digipair/skill-worker": "latest",
+    "digipair:tool-glpi": "latest"
+  },
+  "roles": { "digipair:role-worker": "latest" },
+  "variables": {},
+  "privates": {},
+  "digipair": "worker-glpi",
+  "id": "worker-glpi"
+}

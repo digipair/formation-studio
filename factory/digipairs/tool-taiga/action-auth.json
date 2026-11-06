@@ -1,5 +1,5 @@
 {
-  "description": "Authentifie l'utilisateur sur l'API REST de Taiga et retourne le jeton d'authentification. Authentification centralisée réutilisée par les autres actions.",
+  "description": "Authentifie l'utilisateur sur l'API REST de Taiga et retourne le jeton d'authentification. Le type d'authentification (normal, ldap, ...) est défini par TAIGA_AUTH_TYPE. Authentification centralisée réutilisée par les autres actions.",
   "summary": "Auth",
   "library": "@digipair/skill-tool",
   "element": "action",
@@ -29,7 +29,7 @@
             "Content-Type": "application/json"
           },
           "body": {
-            "type": "normal",
+            "type": "FEEL: if privates.TAIGA_AUTH_TYPE != null and privates.TAIGA_AUTH_TYPE != \"\" then privates.TAIGA_AUTH_TYPE else \"normal\"",
             "username": "FEEL: privates.TAIGA_USERNAME",
             "password": "FEEL: privates.TAIGA_PASSWORD"
           }
